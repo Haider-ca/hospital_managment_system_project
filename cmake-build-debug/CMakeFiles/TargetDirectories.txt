@@ -1,3 +1,3 @@
-C:/Users/haide/CLionProjects/hospital_managment_system_project/cmake-build-debug/CMakeFiles/hospital_managment_system_project.dir
-C:/Users/haide/CLionProjects/hospital_managment_system_project/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/haide/CLionProjects/hospital_managment_system_project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/jpvba/CLionProjects/hospital_managment_system_project/cmake-build-debug/CMakeFiles/hospital_managment_system_project.dir
+C:/Users/jpvba/CLionProjects/hospital_managment_system_project/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/jpvba/CLionProjects/hospital_managment_system_project/cmake-build-debug/CMakeFiles/rebuild_cache.dir

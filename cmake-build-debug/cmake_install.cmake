@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/haide/CLionProjects/hospital_managment_system_project
+# Install script for directory: C:/Users/jpvba/CLionProjects/hospital_managment_system_project
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -52,6 +52,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "C:/Users/haide/CLionProjects/hospital_managment_system_project/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "C:/Users/jpvba/CLionProjects/hospital_managment_system_project/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
