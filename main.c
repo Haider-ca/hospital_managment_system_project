@@ -30,53 +30,6 @@ void addPatient(struct Patient patients[], int *count) {
     }
     printf("\nEnter details for patient %d:\n", *count + 1);
 
-    //Handle input validation for ID
-    while (1) {
-        printf("Enter patient ID: \n");
-        scanf("%d", &patients[*count].patientID);
-        getchar();
-
-        int uniqueID = 1;
-        for (int i = 0; i < *count; i++) {
-            if (patients[i].patientID == patients[*count].patientID) {
-                uniqueID = 0;
-                printf("Patient ID: %d already exists. Please enter a unique ID.\n", patients[*count].patientID);
-                break;
-            }
-        }
-        if (uniqueID) {
-            break;
-        }
-    }
-
-    //Entering patient name
-    printf("Enter patient Name: \n");
-    scanf(" %[^\n]", patients[*count].name);
-    getchar();
-
-
-    //Handle input validation for age
-    while (1) {
-        printf("Enter patient age: \n");
-        scanf("%d", &patients[*count].age);
-
-        if (patients[*count].age > 0 && patients[*count].age <= 100) {
-            break;
-        }
-        printf("Invalid age. Please enter an age between 1 and 100.\n");
-    }
-
-    //Entering patient diagnosis
-    printf("Diagnosis: ");
-    scanf(" %[^\n]", patients[*count].diagnose);
-
-
-    //Handle input validation for room number
-    while (1) {
-        printf("Enter patient Room Number: \n");
-        scanf("%d", &patients[*count].roomNumber);
-        void addPatient(struct Patient patients[], int *count) {
-
     // Handle input validation for ID
     while (1) {
         printf("Enter patient ID: ");
