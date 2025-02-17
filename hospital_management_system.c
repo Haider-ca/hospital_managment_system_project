@@ -1,4 +1,9 @@
 #include <stdio.h>
+#include <string.h>
+
+#define MAX_DOCTORS 50
+#define DAYS_IN_WEEK 7
+#define SHIFTS_IN_DAY 3
 
 struct Patient {
     int patientID;
@@ -8,14 +13,20 @@ struct Patient {
     char diagnose[100];
 };
 
+struct DoctorSchedule {
+    char schedule[DAYS_IN_WEEK][SHIFTS_IN_DAY][100];  // Doctor's name for each shift of each day
+};
+
 // Function for displaying the menu
 int displayMenu() {
     int choice;
-    printf("\n--- Patient Management System ---\n");
+    printf("\n--- Patient and Doctor Schedule Management System ---\n");
     printf("1. Add a new patient\n");
     printf("2. Display all patient records\n");
     printf("3. Discharge a patient\n");
-    printf("4. Exit\n");
+    printf("4. Display doctor schedule\n");
+    printf("5. Assign doctor to shift\n");
+    printf("6. Exit\n");
     printf("Enter your choice: ");
     scanf("%d", &choice);
     return choice;
@@ -84,7 +95,9 @@ void addPatient(struct Patient patients[], int *count) {
 // Function to display all patients
 void displayAllPatients(struct Patient patients[], int count) {
     if (count == 0) {
+        printf("-----------------------\n");
         printf("No patients to display.\n");
+        printf("-----------------------\n");
         return;
     }
 
@@ -129,10 +142,58 @@ void dischargePatient(struct Patient patients[], int *count) {
     printf("Patient with ID %d has been discharged.\n", patientID);
 }
 
+// Function to display doctor schedule
+void displayDoctorSchedule(struct DoctorSchedule *schedule) {
+    printf("\n--- Doctor Schedule for the Week ---\n");
+    char *days[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    char *shifts[] = {"Morning", "Afternoon", "Evening"};
+
+    for (int i = 0; i < DAYS_IN_WEEK; i++) {
+        printf("%s: ", days[i]);
+        for (int j = 0; j < SHIFTS_IN_DAY; j++) {
+            if (strlen(schedule->schedule[i][j]) > 0) {
+                printf("%s (%s) ", shifts[j], schedule->schedule[i][j]);
+            } else {
+                printf("%s (No doctor assigned) ", shifts[j]);
+            }
+        }
+        printf("\n");
+    }
+}
+
+// Function to assign doctor to shift
+void assignDoctorToShift(struct DoctorSchedule *schedule) {
+    char doctorName[100];
+    int day, shift;
+
+    printf("\nEnter doctor's name: ");
+    scanf(" %[^\n]", doctorName); // Space before %[^\n] consumes any leftover newline
+    printf("Enter day of the week (0-Monday, 6-Sunday): ");
+    scanf("%d", &day);
+    printf("Enter shift (0-Morning, 1-Afternoon, 2-Evening): ");
+    scanf("%d", &shift);
+
+    if (day < 0 || day >= DAYS_IN_WEEK || shift < 0 || shift >= SHIFTS_IN_DAY) {
+        printf("Invalid input. Please enter valid day and shift.\n");
+        return;
+    }
+
+    strcpy(schedule->schedule[day][shift], doctorName);
+
+    printf("Doctor %s assigned to %s shift on %s.\n", doctorName,
+           (shift == 0 ? "Morning" :
+           (shift == 1 ? "Afternoon" : "Evening")),
+           (day == 0 ? "Monday" : (day == 1 ? "Tuesday" :
+           (day == 2 ? "Wednesday" : (day == 3 ?
+           "Thursday" : (day == 4 ? "Friday" :
+           (day == 5 ? "Saturday" : "Sunday")))))));
+}
+
 // Main function
 int main() {
     struct Patient patients[50];
-    int patientCount = 0; // Tracks the number of patients added
+    struct DoctorSchedule doctorSchedule = {0};  // Initialize doctor schedule with empty strings
+    int patientCount = 0;
     int choice;
 
     while (1) {
@@ -148,10 +209,16 @@ int main() {
                 dischargePatient(patients, &patientCount);
                 break;
             case 4:
+                displayDoctorSchedule(&doctorSchedule);
+                break;
+            case 5:
+                assignDoctorToShift(&doctorSchedule);
+                break;
+            case 6:
                 printf("Exiting the program. Goodbye!\n");
                 return 0;
             default:
-                printf("Invalid choice. Please enter a number between 1 and 4.\n");
+                printf("Invalid choice. Please enter a number between 1 and 6.\n");
         }
     }
 }
