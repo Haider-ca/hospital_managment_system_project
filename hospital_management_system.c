@@ -17,21 +17,24 @@
 
 // Constants for maximum limits
 #define MAX_DOCTORS 50
+#define MAX_STRING_LENGTH 100
+#define MAX_PATIENT_COUNT 50
 #define DAYS_IN_WEEK 7
 #define SHIFTS_IN_DAY 3
+
 
 // Structure to store patient information
 struct Patient {
     int patientID;       // Unique identifier for the patient
     int age;             // Age of the patient
     int roomNumber;      // Room number assigned to the patient
-    char name[100];      // Full name of the patient
-    char diagnose[100];  // Diagnosis or medical condition of the patient
+    char name[MAX_STRING_LENGTH];      // Full name of the patient
+    char diagnose[MAX_STRING_LENGTH];  // Diagnosis or medical condition of the patient
 };
 
 // Structure to store doctor schedules for a week
 struct DoctorSchedule {
-    char schedule[DAYS_IN_WEEK][SHIFTS_IN_DAY][100];  // 3D array to store doctor names for each shift of each day
+    char schedule[DAYS_IN_WEEK][SHIFTS_IN_DAY][MAX_STRING_LENGTH];  // 3D array to store doctor names for each shift of each day
 };
 
 // Function to display the main menu and get user choice
@@ -251,7 +254,7 @@ void assignDoctorToShift(struct DoctorSchedule *schedule) {
 
 // Main function to run the program
 int main() {
-    struct Patient patients[50]; // Array to store up to 50 patients
+    struct Patient patients[MAX_PATIENT_COUNT]; // Array to store up to 50 patients
     struct DoctorSchedule doctorSchedule = {0};  // Initialize doctor schedule with empty strings
     int patientCount = 0; // Counter to track the number of patients
     int choice;
