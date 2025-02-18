@@ -49,62 +49,49 @@ int displayMenu() {
     return choice;
 }
 
+// Helper function to validate integer input
+int getValidInteger(const char *prompt, int min, int max) {
+    int value;
+    while (1) {
+        printf("%s", prompt);
+        if (scanf("%d", &value) == 1) {
+            // Check if the value is within the specified range
+            if (value >= min && value <= max) {
+                return value; // Valid input
+            } else {
+                printf("Invalid input. Please enter a number between %d and %d.\n", min, max);
+            }
+        } else {
+            printf("Invalid input. Please enter a valid integer.\n");
+            while (getchar() != '\n'); // Clear the input buffer
+        }
+    }
+}
+
 // Function to add a new patient to the system
 void addPatient(struct Patient patients[], int *count) {
-    // Check if the maximum limit of patients has been reached
     if (*count >= 50) {
         printf("Cannot add more patients. Maximum limit reached (50).\n");
         return;
     }
     printf("\nEnter details for patient %d:\n", *count + 1);
 
-    // Input validation for Patient ID (must be unique)
-    while (1) {
-        printf("Enter patient ID: ");
-        scanf("%d", &patients[*count].patientID);
+    // Use helper function for patient ID
+    patients[*count].patientID = getValidInteger("Enter patient ID: ", 1, 1000000);
 
-        int uniqueID = 1;
-        for (int i = 0; i < *count; i++) {
-            if (patients[i].patientID == patients[*count].patientID) {
-                uniqueID = 0;
-                printf("Patient ID: %d already exists. Please enter a unique ID.\n", patients[*count].patientID);
-                break;
-            }
-        }
-        if (uniqueID) {
-            break;
-        }
-    }
+    // Use helper function for age
+    patients[*count].age = getValidInteger("Enter patient age: ", 1, 100); // Age must be between 1 and 100
+
+    // Use helper function for room number
+    patients[*count].roomNumber = getValidInteger("Enter patient Room Number: ", 1, 1000);
 
     // Input patient name
     printf("Enter patient Name: ");
     scanf(" %[^\n]", patients[*count].name); // Space before %[^\n] consumes any leftover newline
 
-    // Input validation for patient age (must be between 1 and 100)
-    while (1) {
-        printf("Enter patient age: ");
-        scanf("%d", &patients[*count].age);
-
-        if (patients[*count].age > 0 && patients[*count].age <= 100) {
-            break;
-        }
-        printf("Invalid age. Please enter an age between 1 and 100.\n");
-    }
-
     // Input patient diagnosis
     printf("Diagnosis: ");
     scanf(" %[^\n]", patients[*count].diagnose); // Space before %[^\n] consumes any leftover newline
-
-    // Input validation for room number (must be a positive integer)
-    while (1) {
-        printf("Enter patient Room Number: ");
-        scanf("%d", &patients[*count].roomNumber);
-
-        if (patients[*count].roomNumber > 0) {
-            break;
-        }
-        printf("Invalid room number. Please enter a positive number.\n");
-    }
 
     (*count)++; // Increment the patient count
     printf("Patient added successfully!\n");
@@ -134,7 +121,6 @@ void displayAllPatients(struct Patient patients[], int count) {
 
 // Function to search for a patient by ID or name
 void searchPatient(struct Patient patients[], int count) {
-    // Check if there are no patients to search
     if (count == 0) {
         printf("No patients to search.\n");
         return;
@@ -145,13 +131,11 @@ void searchPatient(struct Patient patients[], int count) {
     printf("1. Patient ID\n");
     printf("2. Patient Name\n");
     printf("Enter your choice: ");
-    scanf("%d", &choice);
+    choice = getValidInteger("", 1, 2); // Choice must be 1 or 2
 
     if (choice == 1) {
-        // Search by Patient ID
-        int searchID;
-        printf("Enter Patient ID: ");
-        scanf("%d", &searchID);
+        // Use helper function for patient ID
+        int searchID = getValidInteger("Enter Patient ID: ", 1, 1000000);
 
         for (int i = 0; i < count; i++) {
             if (patients[i].patientID == searchID) {
@@ -186,24 +170,20 @@ void searchPatient(struct Patient patients[], int count) {
         if (!found) {
             printf("Patient with name '%s' not found.\n", searchName);
         }
-    } else {
-        printf("Invalid choice. Please enter 1 or 2.\n");
     }
 }
 
 // Function to discharge a patient (remove their record)
 void dischargePatient(struct Patient patients[], int *count) {
-    // Check if there are no patients to discharge
     if (*count == 0) {
         printf("No patients to discharge.\n");
         return;
     }
 
-    int patientID, index = -1;
-    printf("Enter Patient ID to discharge: ");
-    scanf("%d", &patientID);
+    // Use helper function for patient ID
+    int patientID = getValidInteger("Enter Patient ID to discharge: ", 1, 1000000);
 
-    // Find the patient by ID
+    int index = -1;
     for (int i = 0; i < *count; i++) {
         if (patients[i].patientID == patientID) {
             index = i;
@@ -211,17 +191,15 @@ void dischargePatient(struct Patient patients[], int *count) {
         }
     }
 
-    // If patient not found, display an error message
     if (index == -1) {
         printf("Patient ID not found.\n");
         return;
     }
 
-    // Shift all elements after the discharged patient to the left
     for (int i = index; i < *count - 1; i++) {
         patients[i] = patients[i + 1];
     }
-    (*count)--; // Decrement the patient count
+    (*count)--;
     printf("Patient with ID %d has been discharged.\n", patientID);
 }
 
@@ -252,16 +230,12 @@ void assignDoctorToShift(struct DoctorSchedule *schedule) {
 
     printf("\nEnter doctor's name: ");
     scanf(" %[^\n]", doctorName); // Space before %[^\n] consumes any leftover newline
-    printf("Enter day of the week (0-Monday, 6-Sunday): ");
-    scanf("%d", &day);
-    printf("Enter shift (0-Morning, 1-Afternoon, 2-Evening): ");
-    scanf("%d", &shift);
 
-    // Validate day and shift inputs
-    if (day < 0 || day >= DAYS_IN_WEEK || shift < 0 || shift >= SHIFTS_IN_DAY) {
-        printf("Invalid input. Please enter valid day and shift.\n");
-        return;
-    }
+    // Use helper function for day input
+    day = getValidInteger("Enter day of the week (0-Monday, 6-Sunday): ", 0, 6);
+
+    // Use helper function for shift input
+    shift = getValidInteger("Enter shift (0-Morning, 1-Afternoon, 2-Evening): ", 0, 2);
 
     // Assign the doctor to the specified shift
     strcpy(schedule->schedule[day][shift], doctorName);
@@ -293,15 +267,18 @@ int main() {
                 displayAllPatients(patients, patientCount);
                 break;
             case 3:
+                searchPatient(patients, patientCount);
+            break;
+            case 4:
                 dischargePatient(patients, &patientCount);
                 break;
-            case 4:
+            case 5:
                 displayDoctorSchedule(&doctorSchedule);
                 break;
-            case 5:
+            case 6:
                 assignDoctorToShift(&doctorSchedule);
                 break;
-            case 6:
+            case 7:
                 printf("Exiting the program. Goodbye!\n");
                 return 0;
             default:
