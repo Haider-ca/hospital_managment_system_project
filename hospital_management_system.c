@@ -43,10 +43,11 @@ int displayMenu() {
     printf("\n--- Patient and Doctor Schedule Management System ---\n");
     printf("1. Add a new patient\n");
     printf("2. Display all patient records\n");
-    printf("3. Discharge a patient\n");
-    printf("4. Display doctor schedule\n");
-    printf("5. Assign doctor to shift\n");
-    printf("6. Exit\n");
+    printf("3. Search for a patient by ID or Name\n");
+    printf("4. Discharge a patient\n");
+    printf("5. Display doctor schedule\n");
+    printf("6. Assign doctor to shift\n");
+    printf("7. Exit\n");
     printf("Enter your choice: ");
     scanf("%d", &choice);
     return choice;
