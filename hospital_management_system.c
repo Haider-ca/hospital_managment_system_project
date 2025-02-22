@@ -80,8 +80,26 @@ void addPatient(struct Patient patients[], int *count) {
     }
     printf("\nEnter details for patient %d:\n", *count + 1);
 
-    // Use helper function for patient ID
-    patients[*count].patientID = getValidInteger("Enter patient ID: ", 1, 1000000);
+    int newID;
+    while (1) {
+        newID = getValidInteger("Enter patient ID: ", 1, 1000000);
+
+        // Check for duplicate ID
+        int duplicate = 0;
+        for (int i = 0; i < *count; i++) {
+            if (patients[i].patientID == newID) {
+                duplicate = 1;
+                printf("Patient ID %d already exists. Please enter a unique ID.\n", newID);
+                break;
+            }
+        }
+
+        if (!duplicate) {
+            break; // Unique ID found, exit the loop
+        }
+    }
+
+    patients[*count].patientID = newID;
 
     // Use helper function for age
     patients[*count].age = getValidInteger("Enter patient age: ", 1, 100); // Age must be between 1 and 100
